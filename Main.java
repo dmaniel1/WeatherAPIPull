@@ -19,8 +19,17 @@ public class Main {
        .method("GET", HttpRequest.BodyPublishers.noBody())
        .build();
     HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-    System.out.println(response.body());
+   // System.out.println(response.body());
     String outcome = response.body();
     String[] data = outcome.split(":");
+    int control = 0;
+    while(control < data.length) {
+      if(data[control].contains("temp")){
+        String[] newArray = data[control + 1].split(",");
+        System.out.print(newArray[0]);
+        control = data.length;
+      }
+      control = control + 1;
+    }
   }
 }
