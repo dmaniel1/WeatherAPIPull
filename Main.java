@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.net.http.HttpRequest;
 import java.net.URI;
 import java.net.http.HttpRequest.BodyPublishers;
@@ -10,26 +11,33 @@ import java.lang.InterruptedException;
 
 // import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("unused")
 public class Main {
   public static void main(String[] args) throws IOException, InterruptedException {
+    @SuppressWarnings("resource")
+    Scanner scorn = new Scanner(System.in);
+    System.out.println("What would you like to find?");
+    String selection = scorn.next();
+    System.out.println("What city?");
+    String city = scorn.next();
     HttpRequest request = HttpRequest.newBuilder()
-       .uri(URI.create("https://open-weather13.p.rapidapi.com/city/chicago/EN"))
+       .uri(URI.create("https://open-weather13.p.rapidapi.com/city/" + city.toLowerCase() + "/EN"))
        .header("x-rapidapi-key", "2dfce233a4msh7ab7b2341f9304bp1db9c7jsn938689e18a82")
        .header("x-rapidapi-host", "open-weather13.p.rapidapi.com")
        .method("GET", HttpRequest.BodyPublishers.noBody())
        .build();
     HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-   // System.out.println(response.body());
+    System.out.println(response.body());
     String outcome = response.body();
     String[] data = outcome.split(":");
-    int control = 0;
-    while(control < data.length) {
-      if(data[control].contains("temp")){
-        String[] newArray = data[control + 1].split(",");
-        System.out.print(newArray[0]);
-        control = data.length;
+    int contr = 0;
+      while (contr < data.length) {
+          if (data[contr].contains(selection)) {
+            String feelsLike = data[contr+1];
+            String[] thisString3 = feelsLike.split(",");
+            System.out.println(thisString3[0]);
+          }
+          contr++;
       }
-      control = control + 1;
-    }
   }
 }
